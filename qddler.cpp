@@ -65,38 +65,38 @@ int Qddler::getItemEnergy(int count, QString todotext){//获取项目消耗精�
     return energy;
 }
 
-bool Qddler::changeTime(double time){//改变时间，发送信号
+void Qddler::changeTime(double time){//改变时间，发送信号
     if(Time - time > 0){
        Time -= time;
        emit onTimechanged();
-       return true;
+
     }
     else  {
         emit onTimeExhausted();
-        return false;
+
     }
 }
-bool Qddler::changeEnergy(double energy){//改变精力值，发送信号
+void Qddler::changeEnergy(double energy){//改变精力值，发送信号
     if(Energy+energy>0){
         Energy += energy;
         emit onEnergychanged();
-        return true;
+
     }
     else{
         emit onEnergyExhausted();
-        return false;
+
     }
 }
-bool Qddler::changeDeadline(int deadline){//改变ddl值，发送信号
+void Qddler::changeDeadline(int deadline){//改变ddl值，发送信号
     if(Deadline+deadline>=0) {//改变ddl额度
         Deadline+=ddl;
         emit onDeadlinechanged();
-        return true;
+
     }
     else {
         Deadline = 0;
         emit onDeadlineExhausted();
-        return false;
+
     }
 }
 

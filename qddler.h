@@ -25,9 +25,9 @@ public:
     double getItemTime(int count,QString todotext);
     int getItemDdl(int count, QString todotext);
     int getItemEnergy(int count, QString todotext);
-    bool changeTime(double time);
-    bool changeEnergy(double time);
-    bool changeDeadline(int deadline);
+    void changeTime(double time);
+    void changeEnergy(double time);
+    void changeDeadline(int deadline);
 
 
 

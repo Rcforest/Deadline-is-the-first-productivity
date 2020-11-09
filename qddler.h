@@ -25,9 +25,14 @@ public:
     double getItemTime(int count,QString todotext);
     int getItemDdl(int count, QString todotext);
     int getItemEnergy(int count, QString todotext);
+
     void changeTime(double time);
-    void changeEnergy(double time);
+    void changeEnergy(double energy);
     void changeDeadline(int deadline);
+
+    void recoverTime(double time);
+    void recoverEnergy(double energy);
+    void recoverDeadline(int deadline);
 
 
 
@@ -41,7 +46,7 @@ private:
     //事件对应的参数
     double time;
     int ddl;
-    int energy;
+    double energy;
 
 
 

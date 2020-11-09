@@ -84,7 +84,7 @@ void deadline::iniconnect(){//初始化信号与槽的连接
     connect(ddler, SIGNAL(onEnergyExhausted()), this, SLOT(on_MsgWarning_Energy()));
     connect(ddler, SIGNAL(onDeadlineExhausted()), this, SLOT(on_MsgInfo_Deadline()));
 }
-void deadline::on_todoList_itemDoubleClicked(QListWidgetItem *item)//双击列表中项目实现项目转移
+void deadline::on_todoList_itemDoubleClicked(QListWidgetItem *item)//双击todolist中项目实现项目转移至donelist
 {
     //执行计数对话窗
     countItem *dlgCount = new countItem(this);
@@ -102,16 +102,42 @@ void deadline::on_todoList_itemDoubleClicked(QListWidgetItem *item)//双击列�
         //qDebug()<<"todotext: "<<todotext;
 
 
-        if((ddler->getItemEnergy(count, todotext)+ddler->getEnergy()>0)&&(ddler->getItemTime(count, todotext)+ddler->getTime()>0)){//只有在两者者条件都满足的情况下才可以添加新事件
-            ddler->changeEnergy(ddler->getItemTime(count, todotext));
-            ddler->changeDeadline(ddler->getItemDdl(count, todotext));
-            ddler->changeTime(ddler->getItemTime(count, todotext));
+        if((ddler->getItemEnergy(count, todotext)+ddler->getEnergy()>=0)&&(ddler->getTime()>0-ddler->getItemTime(count, todotext))&&count!=0){//只有在三者条件都满足的情况下才可以添加新事件
             QListWidgetItem *i = new QListWidgetItem(donetext+"..................."+ sTime +"h");
             ui->doneList->insertItem(ui->doneList->currentRow(),i);
             ddler->changeDeadline(ddler->getItemDdl(count, todotext));
+            ddler->changeEnergy(ddler->getItemEnergy(count, todotext));
+            ddler->changeTime(ddler->getItemTime(count, todotext));
         }
-
+        else if(ddler->getItemEnergy(count, todotext)+ddler->getEnergy()<0)
+            emit ddler->onEnergyExhausted();
+        else if(ddler->getItemTime(count,todotext)-ddler->getTime()<0)
+            emit ddler->onTimeExhausted();
+}
+}
+void deadline::on_doneList_itemDoubleClicked(QListWidgetItem *item)//双击itemlist终项目移除当前项，并改变时间。出大问题，我不会调回去呜呜呜呜呜！
+{
+    //处理item的数据
+    QString str = item->text();
+    QStringList list = str.split("...................");
+    QCharRef doneTime_s = list[1][0];
+    QString itemText = list[1];
+    QString itemTime_s;
+    for(int i=0;i<itemText.length();i++){
+        if(itemText[i]>='0'&&itemText[i]<='9')
+            itemTime_s.append(itemText[i]);
     }
+    double itemTime = itemTime_s.toDouble();
+    double doneTime = doneTime_s.digitValue();
+    int count = doneTime/itemTime;
+
+    ui->doneList->takeItem(ui->doneList->currentRow());
+
+    //恢复lcdNumber的值
+    ddler->recoverDeadline(ddler->getItemDdl(count, itemText));
+    ddler->recoverEnergy(ddler->getItemEnergy(count, itemText));
+    ddler->recoverTime(ddler->getItemTime(count, itemText));
+
 }
 
 
@@ -144,3 +170,4 @@ void deadline::on_MsgInfo_Deadline(){
     QString strInfo = "ddl清干净啦！你可以快乐畅游于知识的海洋中了！";
     QMessageBox::information(this, dlgTitle, strInfo);
 }
+

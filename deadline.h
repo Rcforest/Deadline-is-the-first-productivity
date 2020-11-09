@@ -47,6 +47,7 @@ private slots:
     void on_MsgWarning_Time();
     void on_MsgWarning_Energy();
     void on_MsgInfo_Deadline();
+    void on_doneList_itemDoubleClicked(QListWidgetItem *item);
 };
 
 

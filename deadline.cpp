@@ -21,7 +21,7 @@ deadline::deadline(QWidget *parent)
 
     iniUI();
     iniconnect();
-//    inilistModel();
+
 
 }
 
@@ -96,10 +96,7 @@ void deadline::on_todoList_itemDoubleClicked(QListWidgetItem *item)//双击todol
     //向doneList中添加项目
     if(dlgCount->exec()==QDialog::Accepted){
         double count = dlgCount->getItemCount();
-        //qDebug()<<"count"<<count;
         QString sTime = QString::number(ddler->getItemTime(count, todotext));
-        //qDebug()<<"time"<<sTime;
-        //qDebug()<<"todotext: "<<todotext;
 
 
         if((ddler->getItemEnergy(count, todotext)+ddler->getEnergy()>=0)&&(ddler->getTime()>0-ddler->getItemTime(count, todotext))&&count!=0){//只有在三者条件都满足的情况下才可以添加新事件
@@ -115,27 +112,34 @@ void deadline::on_todoList_itemDoubleClicked(QListWidgetItem *item)//双击todol
             emit ddler->onTimeExhausted();
 }
 }
-void deadline::on_doneList_itemDoubleClicked(QListWidgetItem *item)//双击itemlist终项目移除当前项，并改变时间。出大问题，我不会调回去呜呜呜呜呜！
+void deadline::on_doneList_itemDoubleClicked(QListWidgetItem *item)//双击itemlist终项目移除当前项，并改变时间。
 {
     //处理item的数据
     QString str = item->text();
     QStringList list = str.split("...................");
-    QCharRef doneTime_s = list[1][0];
-    QString itemText = list[1];
+    QString doneText = list[1]; //获取后半段字符串
+    QString itemText = list[0]; //获取前半段字符串
     QString itemTime_s;
     for(int i=0;i<itemText.length();i++){
         if(itemText[i]>='0'&&itemText[i]<='9')
             itemTime_s.append(itemText[i]);
     }
-    double itemTime = itemTime_s.toDouble();
-    double doneTime = doneTime_s.digitValue();
+    QString doneTime_s;
+    for(int i=0;i<doneText.length();i++){
+        if(doneText[i]>='0'&&doneText[i]<='9')
+            doneTime_s.append(doneText[i]);
+    }
+    double itemTime = itemTime_s.toDouble(); //获取事项单次时间；
+    double doneTime = doneTime_s.toDouble();//获取事项总时间；
     int count = doneTime/itemTime;
 
     ui->doneList->takeItem(ui->doneList->currentRow());
 
     //恢复lcdNumber的值
-    ddler->recoverDeadline(ddler->getItemDdl(count, itemText));
+    ddler->recoverDeadline(ddler->changeDeadline(ddler->getItemDdl(count, itemText)));
+
     ddler->recoverEnergy(ddler->getItemEnergy(count, itemText));
+
     ddler->recoverTime(ddler->getItemTime(count, itemText));
 
 }
@@ -171,3 +175,41 @@ void deadline::on_MsgInfo_Deadline(){
     QMessageBox::information(this, dlgTitle, strInfo);
 }
 
+
+void deadline::on_btnNext_clicked()
+{
+    int cnt = ui->doneList->count();
+    for(int i=0;i<cnt;i++){
+        QListWidgetItem *item = ui->doneList->item(i);
+        //处理item的数据
+        QString str = item->text();
+        QStringList list = str.split("...................");
+        QString doneText = list[1]; //获取后半段字符串
+        QString itemText = list[0]; //获取前半段字符串
+        QString itemTime_s;
+        for(int i=0;i<itemText.length();i++){//提取itemText中的时间
+            if(itemText[i]>='0'&&itemText[i]<='9')
+                itemTime_s.append(itemText[i]);
+        }
+
+        QString doneTime_s;
+        for(int i=0;i<doneText.length();i++){//提取doneText中的时间
+            if(doneText[i]>='0'&&doneText[i]<='9')
+                doneTime_s.append(doneText[i]);
+        }
+        double itemTime = itemTime_s.toDouble(); //获取事项单次时间；
+        double doneTime = doneTime_s.toDouble();//获取事项总时间；
+        int count = doneTime/itemTime;
+
+        //恢复lcdNumber的值,但保留待办数
+        ddler->recoverEnergy(ddler->getItemEnergy(count, itemText));
+        ddler->recoverTime(ddler->getItemTime(count, itemText));
+
+    }
+    ui->doneList->clear();
+
+    //改变progressbar显示
+    ddler->Week += 1;
+    prbWeek ->setValue(ddler->getWeek());
+    labWeek -> setText("第" + QString::number(ddler->getWeek()) + "周");
+}

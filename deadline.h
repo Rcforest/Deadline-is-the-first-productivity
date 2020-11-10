@@ -39,7 +39,6 @@ private:
 private slots:
 
 
-    //void on_btnNext_clicked();
     void on_todoList_itemDoubleClicked(QListWidgetItem *item);
     void refreshTime();
     void refreshEnergy();
@@ -48,6 +47,7 @@ private slots:
     void on_MsgWarning_Energy();
     void on_MsgInfo_Deadline();
     void on_doneList_itemDoubleClicked(QListWidgetItem *item);
+    void on_btnNext_clicked();
 };
 
 

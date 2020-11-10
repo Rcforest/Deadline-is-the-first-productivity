@@ -13,6 +13,7 @@ class Qddler : public QObject
 
 {
     Q_OBJECT;
+    friend class deadline;
 
 
 public:
@@ -28,7 +29,7 @@ public:
 
     void changeTime(double time);
     void changeEnergy(double energy);
-    void changeDeadline(int deadline);
+    int changeDeadline(int deadline);
 
     void recoverTime(double time);
     void recoverEnergy(double energy);
@@ -58,6 +59,8 @@ signals:
     void onTimeExhausted();
     void onEnergyExhausted();
     void onDeadlineExhausted();
+
+    void onItemrolled(QListWidgetItem *aItem);
 
 
 

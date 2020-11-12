@@ -9,6 +9,8 @@
 
 #include "qddler.h"
 #include "countitem.h"
+#include "wingame.h"
+#include "failgame.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class deadline; }
@@ -43,11 +45,14 @@ private slots:
     void refreshTime();
     void refreshEnergy();
     void refreshDdl();
+    void refreshWeek();
     void on_MsgWarning_Time();
     void on_MsgWarning_Energy();
     void on_MsgInfo_Deadline();
     void on_doneList_itemDoubleClicked(QListWidgetItem *item);
     void on_btnNext_clicked();
+    void winGame();
+    void failGame();
 };
 
 

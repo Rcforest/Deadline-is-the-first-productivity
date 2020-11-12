@@ -80,9 +80,12 @@ void deadline::iniconnect(){//初始化信号与槽的连接
     connect(ddler, SIGNAL(onTimechanged()),this, SLOT(refreshTime()));
     connect(ddler, SIGNAL(onEnergychanged()), this, SLOT(refreshEnergy()));
     connect(ddler, SIGNAL(onDeadlinechanged()), this, SLOT(refreshDdl()));
+    connect(ddler, SIGNAL(onWeekchanged()), this, SLOT(refreshWeek()));
     connect(ddler, SIGNAL(onTimeExhausted()), this, SLOT(on_MsgWarning_Time()));
     connect(ddler, SIGNAL(onEnergyExhausted()), this, SLOT(on_MsgWarning_Energy()));
     connect(ddler, SIGNAL(onDeadlineExhausted()), this, SLOT(on_MsgInfo_Deadline()));
+    connect(ddler, SIGNAL(on_winGame()), this, SLOT(winGame()));
+    connect(ddler, SIGNAL(on_failGame()),this, SLOT(failGame()));
 }
 void deadline::on_todoList_itemDoubleClicked(QListWidgetItem *item)//双击todolist中项目实现项目转移至donelist
 {
@@ -136,7 +139,7 @@ void deadline::on_doneList_itemDoubleClicked(QListWidgetItem *item)//双击iteml
     ui->doneList->takeItem(ui->doneList->currentRow());
 
     //恢复lcdNumber的值
-    ddler->recoverDeadline(ddler->changeDeadline(ddler->getItemDdl(count, itemText)));
+    ddler->recoverDeadline(ddler->getItemDdl(count, itemText));
 
     ddler->recoverEnergy(ddler->getItemEnergy(count, itemText));
 
@@ -148,7 +151,6 @@ void deadline::on_doneList_itemDoubleClicked(QListWidgetItem *item)//双击iteml
 
 void deadline::refreshTime(){
     lcdTime->display(ddler->getTime());
-    qDebug()<<ddler->getTime();
 }
 
 void deadline::refreshEnergy(){
@@ -157,6 +159,11 @@ void deadline::refreshEnergy(){
 
 void deadline::refreshDdl(){
     lcdDdl->display(ddler->getDeadline());
+}
+
+void deadline::refreshWeek(){
+    prbWeek ->setValue(ddler->getWeek());
+    labWeek -> setText("第" + QString::number(ddler->getWeek()) + "周");
 }
 
 void deadline::on_MsgWarning_Time(){
@@ -208,8 +215,15 @@ void deadline::on_btnNext_clicked()
     }
     ui->doneList->clear();
 
-    //改变progressbar显示
-    ddler->Week += 1;
-    prbWeek ->setValue(ddler->getWeek());
-    labWeek -> setText("第" + QString::number(ddler->getWeek()) + "周");
+    ddler->changeWeek();
 }
+
+void deadline::winGame(){//赢得游戏对话窗
+    class winGame *dlgWin = new class winGame(this);
+    dlgWin->exec();
+ }
+void deadline::failGame(){//游戏失败对话窗
+    class failGame *dlgFail = new class failGame(this);
+    dlgFail->exec();
+}
+

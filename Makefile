@@ -227,6 +227,7 @@ Makefile: ddl.pro ../../../../Development/QT/5.15.1/mingw81_64/mkspecs/win32-g++
 		../../../../Development/QT/5.15.1/mingw81_64/mkspecs/features/qt_config.prf \
 		../../../../Development/QT/5.15.1/mingw81_64/mkspecs/win32-g++/qmake.conf \
 		../../../../Development/QT/5.15.1/mingw81_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../../Development/QT/5.15.1/mingw81_64/mkspecs/features/exclusive_builds.prf \
 		../../../../Development/QT/5.15.1/mingw81_64/mkspecs/features/toolchain.prf \
 		../../../../Development/QT/5.15.1/mingw81_64/mkspecs/features/default_pre.prf \
@@ -255,7 +256,6 @@ Makefile: ddl.pro ../../../../Development/QT/5.15.1/mingw81_64/mkspecs/win32-g++
 		../../../../Development/QT/5.15.1/mingw81_64/lib/Qt5Gui.prl \
 		../../../../Development/QT/5.15.1/mingw81_64/lib/Qt5Core.prl \
 		../../../../Development/QT/5.15.1/mingw81_64/lib/qtmain.prl \
-		.qmake.stash \
 		../../../../Development/QT/5.15.1/mingw81_64/mkspecs/features/build_pass.prf
 	$(QMAKE) -o Makefile ddl.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 ../../../../Development/QT/5.15.1/mingw81_64/mkspecs/features/spec_pre.prf:
@@ -415,6 +415,7 @@ Makefile: ddl.pro ../../../../Development/QT/5.15.1/mingw81_64/mkspecs/win32-g++
 ../../../../Development/QT/5.15.1/mingw81_64/mkspecs/features/qt_config.prf:
 ../../../../Development/QT/5.15.1/mingw81_64/mkspecs/win32-g++/qmake.conf:
 ../../../../Development/QT/5.15.1/mingw81_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../../Development/QT/5.15.1/mingw81_64/mkspecs/features/exclusive_builds.prf:
 ../../../../Development/QT/5.15.1/mingw81_64/mkspecs/features/toolchain.prf:
 ../../../../Development/QT/5.15.1/mingw81_64/mkspecs/features/default_pre.prf:
@@ -443,7 +444,6 @@ ddl.pro:
 ../../../../Development/QT/5.15.1/mingw81_64/lib/Qt5Gui.prl:
 ../../../../Development/QT/5.15.1/mingw81_64/lib/Qt5Core.prl:
 ../../../../Development/QT/5.15.1/mingw81_64/lib/qtmain.prl:
-.qmake.stash:
 ../../../../Development/QT/5.15.1/mingw81_64/mkspecs/features/build_pass.prf:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ddl.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"

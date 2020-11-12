@@ -5,9 +5,9 @@
 Qddler::Qddler()
 {
     Week = 1;
-    Time = 24 * 7;
+    Time = 999;
     time = 0;
-    Energy = 100;
+    Energy = 999;
     Deadline = 0;
     ddl = 0;
 
@@ -44,7 +44,7 @@ double Qddler::getItemTime(int count, QString todotext){//获取项目时间
 }
 int Qddler::getItemDdl(int count, QString todotext){//获取项目ddl数
     if(todotext=="摸鱼(2h)")  ddl = count * 3;
-    else if(todotext=="翘课(2h)") ddl = Deadline * 0.5;
+    else if(todotext=="翘课(2h)") ddl = count * 4;
     else if(todotext=="上课(5h)") ddl = count * 2;
     else if(todotext=="焊板子(5h)") ddl = - count * 5;
     else if(todotext=="运动校园(0.25h)") ddl = - count * 1;
@@ -76,6 +76,7 @@ void Qddler::changeEnergy(double energy){//改变精力值，发送信号
 void Qddler::changeDeadline(int deadline){//改变ddl值，发送信号
     if(Deadline+deadline<=0){ //改变ddl额度
         deadline = -Deadline;
+        if(Deadline!=0)
         emit onDeadlineExhausted();
     }
 
@@ -83,6 +84,16 @@ void Qddler::changeDeadline(int deadline){//改变ddl值，发送信号
     emit onDeadlinechanged();
 
  }
+void Qddler::changeWeek(){
+    if(Week!=10) {
+        Week +=1;
+        emit onWeekchanged();
+    }
+    else{
+        if(Deadline==0) emit on_winGame();
+        else emit on_failGame();
+    }
+}
 
 
 
@@ -96,7 +107,6 @@ void Qddler::recoverEnergy(double energy){//恢复精力
     emit onEnergychanged();
 }
 void Qddler::recoverDeadline(int deadline){//恢复ddl
-    if(Deadline-deadline<=0) deadline = -Deadline;
     Deadline -= deadline;
     emit onDeadlinechanged();
 }

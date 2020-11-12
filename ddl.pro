@@ -11,17 +11,23 @@ CONFIG += c++11
 SOURCES += \
     countitem.cpp \
     deadline.cpp \
+    failgame.cpp \
     main.cpp \
-    qddler.cpp
+    qddler.cpp \
+    wingame.cpp
 
 HEADERS += \
     countitem.h \
     deadline.h \
-    qddler.h
+    failgame.h \
+    qddler.h \
+    wingame.h
 
 FORMS += \
     countitem.ui \
-    deadline.ui
+    deadline.ui \
+    failgame.ui \
+    wingame.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -13,8 +13,6 @@ class Qddler : public QObject
 
 {
     Q_OBJECT;
-    //friend class deadline;
-
 
 public:
     Qddler();
@@ -36,9 +34,6 @@ public:
     void recoverEnergy(double energy);
     void recoverDeadline(int deadline);
 
-
-
-
 private:
     //widget里显示的参数
     int Week;
@@ -49,8 +44,6 @@ private:
     double time;
     int ddl;
     double energy;
-
-
 
 signals:
     void onTimechanged();
@@ -64,10 +57,6 @@ signals:
 
     void on_failGame();
     void on_winGame();
-
-
-
-
 };
 
 #endif // QDDLER_H

@@ -102,7 +102,8 @@ void deadline::on_todoList_itemDoubleClicked(QListWidgetItem *item)//双击todol
         QString sTime = QString::number(ddler->getItemTime(count, todotext));
 
 
-        if((ddler->getItemEnergy(count, todotext)+ddler->getEnergy()>=0)&&(ddler->getTime()>0-ddler->getItemTime(count, todotext))&&count!=0){//只有在三者条件都满足的情况下才可以添加新事件
+        if((ddler->getItemEnergy(count, todotext)+ddler->getEnergy()>=0)&&(ddler->getTime()-ddler->getItemTime(count, todotext)>0)&&count!=0){
+            //只有在三者条件都满足的情况下才可以添加新事件
             QListWidgetItem *i = new QListWidgetItem(donetext+"..................."+ sTime +"h");
             ui->doneList->insertItem(ui->doneList->currentRow(),i);
             ddler->changeDeadline(ddler->getItemDdl(count, todotext));
@@ -111,12 +112,11 @@ void deadline::on_todoList_itemDoubleClicked(QListWidgetItem *item)//双击todol
         }
         else if(ddler->getItemEnergy(count, todotext)+ddler->getEnergy()<0)
             emit ddler->onEnergyExhausted();
-        else if(ddler->getItemTime(count,todotext)-ddler->getTime()<0)
+        else if(ddler->getTime()-ddler->getItemTime(count, todotext)<0)
             emit ddler->onTimeExhausted();
 }
 }
-void deadline::on_doneList_itemDoubleClicked(QListWidgetItem *item)//双击itemlist终项目移除当前项，并改变时间。
-{
+void deadline::on_doneList_itemDoubleClicked(QListWidgetItem *item){//双击itemlist终项目移除当前项，并改变lcdNumber数值。
     //处理item的数据
     QString str = item->text();
     QStringList list = str.split("...................");
@@ -140,9 +140,7 @@ void deadline::on_doneList_itemDoubleClicked(QListWidgetItem *item)//双击iteml
 
     //恢复lcdNumber的值
     ddler->recoverDeadline(ddler->getItemDdl(count, itemText));
-
     ddler->recoverEnergy(ddler->getItemEnergy(count, itemText));
-
     ddler->recoverTime(ddler->getItemTime(count, itemText));
 
 }

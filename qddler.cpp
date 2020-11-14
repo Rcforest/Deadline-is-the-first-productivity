@@ -5,9 +5,9 @@
 Qddler::Qddler()
 {
     Week = 1;
-    Time = 999;
+    Time = 24 * 7;
     time = 0;
-    Energy = 999;
+    Energy = 100;
     Deadline = 0;
     ddl = 0;
 
@@ -49,7 +49,7 @@ int Qddler::getItemDdl(int count, QString todotext){//获取项目ddl数
     else if(todotext=="焊板子(5h)") ddl = - count * 5;
     else if(todotext=="运动校园(0.25h)") ddl = - count * 1;
     else if(todotext=="c++项目怎么才开始！(5h)") ddl = -count * 2;
-    else ddl = 5;
+    else ddl = 0;
     return ddl;
 }
 int Qddler::getItemEnergy(int count, QString todotext){//获取项目消耗精力
